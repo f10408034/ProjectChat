@@ -40,7 +40,8 @@ class MainActivity : AppCompatActivity() {
     private fun initFragment(){
         fragments.add(0, HomeFragment())
         fragments.add(1, LoginFragment())
-        fragments.add(2,SignUpFragment())
+        fragments.add(2, SignUpFragment())
+        fragments.add(3, ChatRoomsFragment())
 
         supportFragmentManager.beginTransaction().run {
             add(R.id.container, fragments[0])

@@ -78,6 +78,9 @@ class HomeFragment: Fragment() {
             holder.title.setText(lightyear.stream_title)
             Glide.with(this@HomeFragment).load(lightyear.head_photo)
                 .into(holder.headShot)
+            holder.itemView.setOnClickListener {
+                loadFragment(ChatRoomsFragment())
+            }
         }//在這裡取得元件的控制（每個item內的控制）
 
         override fun getItemCount(): Int {
@@ -90,5 +93,11 @@ class HomeFragment: Fragment() {
         val host = view.findViewById<TextView>(R.id.chatroom_host_name)
         val title = view.findViewById<TextView>(R.id.chatroom_title)
         val headShot = view.findViewById<ImageView>(R.id.head_shot)
+    }
+    private fun loadFragment(fragment: Fragment){
+        val transaction = requireActivity().supportFragmentManager.beginTransaction()
+        transaction.replace(R.id.container, fragment)
+        transaction.disallowAddToBackStack()
+        transaction.commit()
     }
 }

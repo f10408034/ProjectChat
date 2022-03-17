@@ -4,6 +4,7 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/fragment_chatrooms.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_home.xml" value="0.24583333333333332" />
         <entry key="app/src/main/res/layout/fragment_login.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_signup.xml" value="0.22" />

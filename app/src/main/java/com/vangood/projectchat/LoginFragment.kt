@@ -37,38 +37,29 @@ class LoginFragment: Fragment() {
         val pref = requireContext().getSharedPreferences("check", Context.MODE_PRIVATE)
         val checked = pref.getBoolean("rem_account", false)
         binding.cbLoginRemember.isChecked = checked
+
         cbFuntion(pref)
+
         val prefAccount = pref.getString("account","")
         if (checked)
             binding.edLoginAccount.setText(prefAccount)
+
         bLoginFunction(pref)
+
         binding.bLoginSignup.setOnClickListener {
-//            SignUpResultLuncher.launch(Intent(this, SignUpActivity::class.java))
             loadFragment(SignUpFragment())
         }
     }
     private fun bLoginFunction(pref: SharedPreferences) {
         binding.bLoginLogin.setOnClickListener {
-            val account = binding.edLoginAccount.text.toString()
-            val password = binding.edLoginPassword.text.toString()
-            if (account == "jack") {
-                if (password == "1234") {
-                    Log.d(TAG, "Login success")
-                    val nickname = pref.getString("nickname", "")
-                    if (remember) {
-                        pref.edit()
-                            .putString("account", account)
-                            .apply()
-                    }
-//                    MainResultLuncher.launch(Intent(this, MainActivity::class.java))
-//                    Toast.makeText(this, "welcome $nickname", Toast.LENGTH_LONG).show()
-                } else {
-                    AlertDialog.Builder(requireContext())
-                        .setTitle("Login")
-                        .setMessage("wrong password")
-                        .setPositiveButton("ok", null)
-                        .show()
-                }
+
+            if (viewModel.loginFunc(binding.edLoginAccount.text.toString()
+                                ,binding.edLoginPassword.text.toString())) {
+                val nickname = pref.getString("nickname", "")
+                if (remember)
+                    pref.edit()
+                        .putString("account", binding.edLoginAccount.text.toString())
+                        .apply()
             } else {
                 AlertDialog.Builder(requireContext())
                     .setTitle("Login")
@@ -82,9 +73,9 @@ class LoginFragment: Fragment() {
         binding.cbLoginRemember.setOnCheckedChangeListener { compoundButton, checked ->
             remember = checked
             pref.edit().putBoolean("rem_account", remember).apply()
-//            if (!checked) {
-//                pref.edit().putString("account", "").apply()
-//            }
+            if (!checked) {
+                pref.edit().putString("account", "").apply()
+            }
         }
     }
     private fun loadFragment(fragment: Fragment){

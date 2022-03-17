@@ -17,6 +17,7 @@ class ChatRoomsFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding= FragmentChatroomsBinding.inflate(layoutInflater)
+
         return binding.root
     }
 

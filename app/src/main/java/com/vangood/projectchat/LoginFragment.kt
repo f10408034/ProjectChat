@@ -41,25 +41,33 @@ class LoginFragment: Fragment() {
         cbFuntion(pref)
 
         val prefAccount = pref.getString("account","")
-        if (checked)
-            binding.edLoginAccount.setText(prefAccount)
-
+        if (checked) binding.edLoginAccount.setText(prefAccount)
         bLoginFunction(pref)
-
         binding.bLoginSignup.setOnClickListener {
             loadFragment(SignUpFragment())
         }
     }
+
     private fun bLoginFunction(pref: SharedPreferences) {
         binding.bLoginLogin.setOnClickListener {
+            val account = pref.getString("account","")
+            val password = pref.getString("password","")
 
             if (viewModel.loginFunc(binding.edLoginAccount.text.toString()
-                                ,binding.edLoginPassword.text.toString())) {
+                                ,binding.edLoginPassword.text.toString()
+                                ,account.toString()
+                                ,password.toString())) {
                 val nickname = pref.getString("nickname", "")
+                AlertDialog.Builder(requireContext())
+                    .setTitle("Login")
+                    .setMessage("Login success")
+                    .setPositiveButton("ok", null)
+                    .show()
                 if (remember)
                     pref.edit()
                         .putString("account", binding.edLoginAccount.text.toString())
                         .apply()
+                loadFragment(HomeFragment())
             } else {
                 AlertDialog.Builder(requireContext())
                     .setTitle("Login")

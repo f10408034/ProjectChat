@@ -25,9 +25,16 @@ class MainActivity : AppCompatActivity() {
                     }
                     true
                 }
+                R.id.action_search ->{
+                    supportFragmentManager.beginTransaction().run {
+                        replace(R.id.container, fragments[1])
+                        commit()
+                    }
+                    true
+                }
                 R.id.action_person ->{
                     supportFragmentManager.beginTransaction().run{
-                        replace(R.id.container, fragments[1])
+                        replace(R.id.container, fragments[2])
                         commit()
                     }
                     true
@@ -39,9 +46,10 @@ class MainActivity : AppCompatActivity() {
 
     private fun initFragment(){
         fragments.add(0, HomeFragment())
-        fragments.add(1, LoginFragment())
-        fragments.add(2, SignUpFragment())
-        fragments.add(3, ChatRoomsFragment())
+        fragments.add(1, SearchFragment())
+        fragments.add(2, LoginFragment())
+//        fragments.add(3, SignUpFragment())
+//        fragments.add(4, ChatRoomsFragment())
 
         supportFragmentManager.beginTransaction().run {
             add(R.id.container, fragments[0])

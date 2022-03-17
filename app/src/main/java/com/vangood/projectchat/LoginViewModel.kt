@@ -12,12 +12,12 @@ class LoginViewModel : ViewModel() {
     private val TAG = LoginViewModel::class.java.simpleName
     val login = MutableLiveData<Boolean>()
 
-    fun loginFunc (account: String, password: String) :Boolean {
-        if (account == "jack" && password == "1234") {
+    fun loginFunc (account: String, password: String, username: String, pass: String) :Boolean {
+        if (account == username && password == pass) {
             Log.d(TAG, "Login success")
             return true
         } else return false
     }
 
-    
+
 }

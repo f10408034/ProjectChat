@@ -10,7 +10,7 @@ import androidx.lifecycle.ViewModel
 
 class LoginViewModel : ViewModel() {
     private val TAG = LoginViewModel::class.java.simpleName
-    val login = MutableLiveData<Boolean>()
+    val remember = MutableLiveData<Boolean>()
 
     fun loginFunc (account: String, password: String, username: String, pass: String) :Boolean {
         if (account == username && password == pass) {

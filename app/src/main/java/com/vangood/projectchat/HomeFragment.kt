@@ -40,6 +40,7 @@ class HomeFragment: Fragment() {
         binding.recycler.layoutManager = GridLayoutManager(requireContext(),2)
         val adapter = ChatRoomAdapter()
         binding.recycler.adapter = adapter
+
         thread {
             val json = URL("https://api.jsonserve.com/hQAtNk").readText()
             val msg = Gson().fromJson(json, ChatData::class.java)

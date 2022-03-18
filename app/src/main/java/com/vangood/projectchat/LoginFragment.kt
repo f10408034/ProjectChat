@@ -37,7 +37,6 @@ class LoginFragment: Fragment() {
         val pref = requireContext().getSharedPreferences("check", Context.MODE_PRIVATE)
         val checked = pref.getBoolean("rem_account", false)
         binding.cbLoginRemember.isChecked = checked
-
         cbFuntion(pref)
 
         val prefAccount = pref.getString("account","")
@@ -82,7 +81,7 @@ class LoginFragment: Fragment() {
             remember = checked
             pref.edit().putBoolean("rem_account", remember).apply()
             if (!checked) {
-                pref.edit().putString("account", "").apply()
+                binding.edLoginAccount.setText("")
             }
         }
     }
@@ -92,4 +91,5 @@ class LoginFragment: Fragment() {
         transaction.disallowAddToBackStack()
         transaction.commit()
     }
+
 }

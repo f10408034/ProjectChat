@@ -1,5 +1,13 @@
 package com.vangood.projectchat
 
+import android.os.Parcelable
+import kotlinx.android.parcel.Parcelize
+
+@Parcelize
+data class Message(val action: String,
+    val content: String
+    ) :Parcelable
+
 data class ChatRoomList(
     val error_code: String,
     val error_text: String,
@@ -8,7 +16,8 @@ data class ChatRoomList(
 
 data class Result(
     val lightyear_list: List<Lightyear>,
-    val stream_list: List<Stream>
+    val stream_list: List<Stream>,
+    val chatdata_list: List<ChatData>
 )
 
 data class Lightyear(
@@ -53,6 +62,7 @@ data class Stream(
     val tags: String
 )
 
+
 data class ChatData(
     val body: Body,
     val event: String,
@@ -60,6 +70,7 @@ data class ChatData(
     val sender_role: Int,
     val time: String
 )
+
 
 data class Body(
     val accept_time: String,
@@ -71,6 +82,7 @@ data class Body(
     val text: String,
     val type: String
 )
+
 
 data class Info(
     val badges: Any,

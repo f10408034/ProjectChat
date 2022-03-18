@@ -1,9 +1,6 @@
 package com.vangood.projectchat
 
-import android.content.Context
-import android.content.SharedPreferences
 import android.util.Log
-import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 

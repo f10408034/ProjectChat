@@ -80,7 +80,7 @@ class ChatRoomsFragment : Fragment() {
 
             override fun onMessage(webSocket: WebSocket, bytes: ByteString) {
                 super.onMessage(webSocket, bytes)
-                Log.d(TAG, ": onMessage ${bytes.hex()}");
+
             }
 
             override fun onOpen(webSocket: WebSocket, response: Response) {
@@ -128,7 +128,8 @@ class ChatRoomsFragment : Fragment() {
                 val msg = Gson().fromJson(json, ChatData::class.java)
                 Log.d(TAG, "msg : ${msg.body.text}");
                 val message = binding.sendmessage.text.toString()
-//                websocket.send(Gson().toJson(Body()))
+                websocket.send(Gson().toJson(Message("N", "464564564564564")))
+
             }
         }
 
@@ -169,5 +170,12 @@ class ChatRoomsFragment : Fragment() {
         transaction.replace(R.id.container, fragment)
         transaction.disallowAddToBackStack()
         transaction.commit()
+    }
+
+    fun chatRoomClicked(message: Message) {
+//        val action = SecondFragmentDirections.actionRoomListToSingleRoom(lightyear)
+        val bundle = Bundle().apply {
+            putParcelable("chateoom", message)
+        }
     }
 }

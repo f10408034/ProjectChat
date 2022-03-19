@@ -1,6 +1,5 @@
 package com.vangood.projectchat
 
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -11,7 +10,7 @@ import java.net.URL
 
 class ChatViewModel : ViewModel() {
     val chatRooms = MutableLiveData<List<ChatData>>()
-    fun getAllChat() {
+    fun getAllRooms() {
         viewModelScope.launch(Dispatchers.IO) {
             val json = URL("https://api.jsonserve.com/hQAtNk").readText()
             val response = Gson().fromJson(json, ChatRoomList::class.java)

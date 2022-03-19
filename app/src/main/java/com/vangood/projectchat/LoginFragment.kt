@@ -35,7 +35,6 @@ class LoginFragment: Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val pref = requireContext().getSharedPreferences("check", Context.MODE_PRIVATE)
-        if (pref.getBoolean("loginstate",true)) loadFragment(PersonFragment())
         val checked = pref.getBoolean("rem_account", false)
         binding.cbLoginRemember.isChecked = checked
 

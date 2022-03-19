@@ -13,7 +13,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.google.gson.Gson
 import com.vangood.projectchat.databinding.FragmentHomeBinding
+import okhttp3.*
+import okio.ByteString
 import java.net.URL
+import java.util.concurrent.TimeUnit
 import kotlin.concurrent.thread
 
 class HomeFragment: Fragment() {
@@ -76,6 +79,7 @@ class HomeFragment: Fragment() {
             Glide.with(this@HomeFragment).load(lightyear.head_photo)
                 .into(holder.headShot)
             holder.itemView.setOnClickListener {
+
                 loadFragment(ChatRoomsFragment())
             }
         }//在這裡取得元件的控制（每個item內的控制）

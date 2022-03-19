@@ -3,11 +3,10 @@ package com.vangood.projectchat
 import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize
 
-@Parcelize
 data class Message(
     val action: String,
     val content: String
-    ) :Parcelable
+    )
 
 data class ChatRoomList(
     val error_code: String,

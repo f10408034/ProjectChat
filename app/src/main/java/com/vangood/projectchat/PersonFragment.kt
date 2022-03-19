@@ -1,5 +1,6 @@
 package com.vangood.projectchat
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -20,8 +21,13 @@ class PersonFragment: Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        var pref = requireContext().getSharedPreferences("check",Context.MODE_PRIVATE)
 
+        binding.tvNickname.text = "nick name : ${pref.getString("nickname", "")}"
+        binding.tvAccount.text = "account : ${pref.getString("account", "")}"
         binding.bSignOut.setOnClickListener {
+            pref.edit().putBoolean("loginstate", false)
+                .apply()
             loadFragment(LoginFragment())
         }
     }

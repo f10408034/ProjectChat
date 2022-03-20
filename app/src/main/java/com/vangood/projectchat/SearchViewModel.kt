@@ -20,7 +20,9 @@ class SearchViewModel : ViewModel() {
             val resultRoomsSet = mutableSetOf<Lightyear>()
 
             response.result.lightyear_list.forEach {
+                map.put(it.stream_title, it)
                 map.put(it.nickname, it)
+                keyList.add(it.stream_title)
                 keyList.add(it.nickname)
             }
 

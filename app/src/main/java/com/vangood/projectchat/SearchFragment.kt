@@ -1,10 +1,9 @@
 package com.vangood.projectchat
 
 import android.os.Bundle
-import android.util.Log
-import android.view.*
-import android.widget.ImageView
-import android.widget.TextView
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -12,14 +11,13 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.vangood.projectchat.databinding.FragmentSearchBinding
+import com.vangood.projectchat.databinding.RowChatroomBinding
 
 class SearchFragment : Fragment() {
-    companion object {
-        val TAG = SearchFragment::class.java.simpleName
-    }
+    val TAG = SearchFragment::class.java.simpleName
     lateinit var binding: FragmentSearchBinding
     lateinit var adapter : SearchRoomAdapter
-    val viewModel by viewModels<SearchViewModel>()
+    val roomViewModel by viewModels<SearchViewModel>()
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -28,6 +26,7 @@ class SearchFragment : Fragment() {
         binding = FragmentSearchBinding.inflate(inflater)
         return binding.root
     }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -35,53 +34,62 @@ class SearchFragment : Fragment() {
         binding.searchRecycler.layoutManager = GridLayoutManager(requireContext(), 2)
         adapter = SearchRoomAdapter()
         binding.searchRecycler.adapter = adapter
-        viewModel.searchRooms.observe(viewLifecycleOwner) { rooms ->
+
+        roomViewModel.searchRooms.observe(viewLifecycleOwner) { rooms ->
             adapter.submitRooms(rooms)
         }
-
 
         binding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener,
             android.widget.SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
-                val key = binding.searchView.query.toString()
-                Log.d(TAG, "onQueryTextSubmit: $key")
-                viewModel.getSearchRooms(key)
+                val keywords = binding.searchView.query.toString()
+                roomViewModel.getSearchRooms(keywords)
                 return false
             }
+
             override fun onQueryTextChange(newText: String?): Boolean {
-                val key = binding.searchView.query.toString()
-                Log.d(TAG, "onQueryTextChange: $key")
+                val keywords = binding.searchView.query.toString()
+                roomViewModel.getSearchRooms(keywords)
                 return false
             }
         })
     }
+
     inner class SearchRoomAdapter : RecyclerView.Adapter<SearchViewHolder>() {
         val searchRooms = mutableListOf<Lightyear>()
+
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SearchViewHolder {
-            val view = layoutInflater.inflate(
-                R.layout.row_chatroom, parent, false)
-            return SearchViewHolder(view)
+            val binding = RowChatroomBinding.inflate(layoutInflater, parent, false)
+            return SearchViewHolder(binding)
         }
+
         override fun onBindViewHolder(holder: SearchViewHolder, position: Int) {
             val lightYearSearch = searchRooms[position]
-            holder.host.setText(lightYearSearch.nickname)
+            holder.HostName.setText(lightYearSearch.nickname)
             holder.title.setText(lightYearSearch.stream_title)
             Glide.with(this@SearchFragment).load(lightYearSearch.head_photo)
                 .into(holder.headPhoto)
+            holder.itemView.setOnClickListener {
+            }
         }
+
         override fun getItemCount(): Int {
             return searchRooms.size
         }
+
         fun submitRooms(rooms: List<Lightyear>) {
             searchRooms.clear()
             searchRooms.addAll(rooms)
             notifyDataSetChanged()
         }
     }
-    inner class SearchViewHolder(view: View) :
+
+    inner class SearchViewHolder(val binding: RowChatroomBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        val host = view.findViewById<TextView>(R.id.chatroom_host_name)
-        val title = view.findViewById<TextView>(R.id.chatroom_title)
-        val headPhoto = view.findViewById<ImageView>(R.id.head_shot)
+        val HostName = binding.chatroomHostName
+        val title = binding.chatroomTitle
+        val headPhoto = binding.headShot
     }
+
+
 }

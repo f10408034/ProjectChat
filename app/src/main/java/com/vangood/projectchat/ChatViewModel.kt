@@ -9,12 +9,10 @@ import kotlinx.coroutines.launch
 import java.net.URL
 
 class ChatViewModel : ViewModel() {
-    val chatRooms = MutableLiveData<String>()
 
-    fun getNickname(Text: String){
-        chatRooms.postValue(Text)
-    }
+    val message = MutableLiveData<String>()
+
     fun getMessage(Text: String) {
-        chatRooms.postValue(Text)
+        message.postValue(Text)
     }
 }

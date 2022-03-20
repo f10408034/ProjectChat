@@ -1,6 +1,7 @@
 package com.vangood.projectchat
 
 import android.app.Activity
+import android.app.AlertDialog
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
@@ -33,7 +34,6 @@ class ChatRoomsFragment : Fragment() {
     lateinit var binding: FragmentChatroomsBinding
     lateinit var websocket: WebSocket
     val viewModel by viewModels<ChatViewModel>()
-    val message = mutableListOf<ChatData>()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -80,7 +80,7 @@ class ChatRoomsFragment : Fragment() {
                 val json = text
                 val chatData = Gson().fromJson(json,ChatData::class.java)
                 if (chatData.event == "default_message") {
-                    viewModel.getNickname("${chatData.body.nickname}")
+                    viewModel.getMessage("${chatData.body.nickname} : ${chatData.body.text}")
                 }
             }
             override fun onMessage(webSocket: WebSocket, bytes: ByteString) {
@@ -94,10 +94,10 @@ class ChatRoomsFragment : Fragment() {
 
         //RecyclerView's Adapter
         binding.chat.setHasFixedSize(true)
-        binding.chat.layoutManager = LinearLayoutManager(requireContext())
+        binding.chat.layoutManager = LinearLayoutManager(requireContext(),LinearLayoutManager.VERTICAL,true)
         adapter = ChatRoomAdapter()
         binding.chat.adapter = adapter
-        viewModel.chatRooms.observe(viewLifecycleOwner) { rooms ->
+        viewModel.message.observe(viewLifecycleOwner) { rooms ->
             adapter.submitRooms(rooms)
         }
 
@@ -110,9 +110,15 @@ class ChatRoomsFragment : Fragment() {
                 websocket.send(Gson().toJson(Message("N", message)))
             }
         }
-
         binding.bExit.setOnClickListener {
-            loadFragment(HomeFragment())
+
+            AlertDialog.Builder(requireContext())
+                .setTitle("Leave")
+                .setMessage("Are you sure you want to leave")
+                .setPositiveButton("Exit",{ d , w ->
+                    loadFragment(HomeFragment())
+                })
+                .show()
         }
     }
 
@@ -126,7 +132,6 @@ class ChatRoomsFragment : Fragment() {
 
         override fun onBindViewHolder(holder: ChatRoomViewHolder, position: Int) {
             val message = chatRooms[position]
-            holder.userName.setText(message)
             holder.tv_message.setText(message)
         }//在這裡取得元件的控制（每個item內的控制）
 
@@ -140,7 +145,6 @@ class ChatRoomsFragment : Fragment() {
     }
 
     inner class ChatRoomViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val userName = view.findViewById<TextView>(R.id.user_name)
         val tv_message = view.findViewById<TextView>(R.id.tv_message)
     }
 

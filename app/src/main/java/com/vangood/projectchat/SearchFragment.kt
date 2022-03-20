@@ -19,7 +19,7 @@ class SearchFragment : Fragment() {
     }
     lateinit var binding: FragmentSearchBinding
     lateinit var adapter : SearchRoomAdapter
-    val ViewModel by viewModels<SearchViewModel>()
+    val viewModel by viewModels<SearchViewModel>()
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -30,35 +30,33 @@ class SearchFragment : Fragment() {
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         binding.searchRecycler.setHasFixedSize(true)
         binding.searchRecycler.layoutManager = GridLayoutManager(requireContext(), 2)
         adapter = SearchRoomAdapter()
         binding.searchRecycler.adapter = adapter
-
-        ViewModel.searchRooms.observe(viewLifecycleOwner) { rooms ->
+        viewModel.searchRooms.observe(viewLifecycleOwner) { rooms ->
             adapter.submitRooms(rooms)
         }
 
-        binding.searchView.setOnQueryTextListener(object : android.widget.SearchView.OnQueryTextListener {
+
+        binding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener,
+            android.widget.SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
-                val keyword = binding.searchView.query.toString()
-                ViewModel.getSearchRooms(keyword)
+                val key = binding.searchView.query.toString()
+                Log.d(TAG, "onQueryTextSubmit: $key")
+                viewModel.getSearchRooms(key)
                 return false
             }
-
             override fun onQueryTextChange(newText: String?): Boolean {
-                val keyword = binding.searchView.query.toString()
-                ViewModel.getSearchRooms(keyword)
+                val key = binding.searchView.query.toString()
+                Log.d(TAG, "onQueryTextChange: $key")
                 return false
             }
         })
-
     }
     inner class SearchRoomAdapter : RecyclerView.Adapter<SearchViewHolder>() {
         val searchRooms = mutableListOf<Lightyear>()
-        override fun getItemCount(): Int {
-            return searchRooms.size
-        }
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SearchViewHolder {
             val view = layoutInflater.inflate(
                 R.layout.row_chatroom, parent, false)
@@ -71,12 +69,14 @@ class SearchFragment : Fragment() {
             Glide.with(this@SearchFragment).load(lightYearSearch.head_photo)
                 .into(holder.headPhoto)
         }
+        override fun getItemCount(): Int {
+            return searchRooms.size
+        }
         fun submitRooms(rooms: List<Lightyear>) {
             searchRooms.clear()
             searchRooms.addAll(rooms)
             notifyDataSetChanged()
         }
-
     }
     inner class SearchViewHolder(view: View) :
         RecyclerView.ViewHolder(binding.root) {
@@ -84,5 +84,4 @@ class SearchFragment : Fragment() {
         val title = view.findViewById<TextView>(R.id.chatroom_title)
         val headPhoto = view.findViewById<ImageView>(R.id.head_shot)
     }
-
 }

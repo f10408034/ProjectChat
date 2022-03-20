@@ -16,10 +16,10 @@ data class ChatRoomList(
 
 data class Result(
     val lightyear_list: List<Lightyear>,
-    val stream_list: List<Stream>,
-    val chatdata_list: List<ChatData>
+    val stream_list: List<Stream>
 )
 
+@Parcelize
 data class Lightyear(
     val background_image: String,
     val charge: Int,
@@ -39,7 +39,7 @@ data class Lightyear(
     val stream_title: String,
     val streamer_id: Int,
     val tags: String
-)
+): Parcelable
 
 data class Stream(
     val background_image: String,

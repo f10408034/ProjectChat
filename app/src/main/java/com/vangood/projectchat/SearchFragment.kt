@@ -2,93 +2,87 @@ package com.vangood.projectchat
 
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.google.gson.Gson
 import com.vangood.projectchat.databinding.FragmentSearchBinding
-import java.net.URL
-import kotlin.concurrent.thread
 
-class SearchFragment: Fragment() {
-    private val TAG = SearchFragment::class.java.simpleName
+class SearchFragment : Fragment() {
+    companion object {
+        val TAG = SearchFragment::class.java.simpleName
+    }
     lateinit var binding: FragmentSearchBinding
-    val rooms = mutableListOf<Lightyear>()
-
+    lateinit var adapter : SearchRoomAdapter
+    val ViewModel by viewModels<SearchViewModel>()
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentSearchBinding.inflate(layoutInflater)
+        binding = FragmentSearchBinding.inflate(inflater)
         return binding.root
     }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        binding.searchRecycler.setHasFixedSize(true)
+        binding.searchRecycler.layoutManager = GridLayoutManager(requireContext(), 2)
+        adapter = SearchRoomAdapter()
+        binding.searchRecycler.adapter = adapter
 
-        binding.recycler.setHasFixedSize(true)
-        binding.recycler.layoutManager = GridLayoutManager(requireContext(),2)
-        var adapter = ChatRoomAdapter()
-        binding.recycler.adapter = adapter
-        thread {
-            val json = URL("https://api.jsonserve.com/hQAtNk").readText()
-            val msg = Gson().fromJson(json, ChatData::class.java)
+        ViewModel.searchRooms.observe(viewLifecycleOwner) { rooms ->
+            adapter.submitRooms(rooms)
         }
-        thread {
-            val json = URL("https://api.jsonserve.com/qHsaqy").readText()
-            val chatRooms = Gson().fromJson(json,ChatRoomList::class.java)
-            Log.d(TAG, "rooms: ${chatRooms.result.lightyear_list.size}")
-            //fill list with new coming data
-            rooms.clear()
-            rooms.addAll(chatRooms.result.lightyear_list)
-            //List<LightYear>
-            activity?.runOnUiThread {
-                adapter.notifyDataSetChanged()
+
+        binding.searchView.setOnQueryTextListener(object : android.widget.SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                val keyword = binding.searchView.query.toString()
+                ViewModel.getSearchRooms(keyword)
+                return false
             }
-        }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                val keyword = binding.searchView.query.toString()
+                ViewModel.getSearchRooms(keyword)
+                return false
+            }
+        })
 
     }
-
-    inner class ChatRoomAdapter : RecyclerView.Adapter<ChatRoomViewHolder>(){
-        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ChatRoomViewHolder {
-            val view = layoutInflater.inflate(R.layout.row_chatroom, parent, false)
-            return ChatRoomViewHolder(view)
-        }
-
-        override fun onBindViewHolder(holder: ChatRoomViewHolder, position: Int) {
-            val lightyear = rooms[position]
-            holder.host.setText(lightyear.nickname)
-            holder.title.setText(lightyear.stream_title)
-            Glide.with(this@SearchFragment).load(lightyear.head_photo)
-                .into(holder.headShot)
-            holder.itemView.setOnClickListener {
-                loadFragment(ChatRoomsFragment())
-            }
-        }
-
+    inner class SearchRoomAdapter : RecyclerView.Adapter<SearchViewHolder>() {
+        val searchRooms = mutableListOf<Lightyear>()
         override fun getItemCount(): Int {
-            return rooms.size
+            return searchRooms.size
+        }
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SearchViewHolder {
+            val view = layoutInflater.inflate(
+                R.layout.row_chatroom, parent, false)
+            return SearchViewHolder(view)
+        }
+        override fun onBindViewHolder(holder: SearchViewHolder, position: Int) {
+            val lightYearSearch = searchRooms[position]
+            holder.host.setText(lightYearSearch.nickname)
+            holder.title.setText(lightYearSearch.stream_title)
+            Glide.with(this@SearchFragment).load(lightYearSearch.head_photo)
+                .into(holder.headPhoto)
+        }
+        fun submitRooms(rooms: List<Lightyear>) {
+            searchRooms.clear()
+            searchRooms.addAll(rooms)
+            notifyDataSetChanged()
         }
 
     }
-
-    inner class ChatRoomViewHolder(view: View) : RecyclerView.ViewHolder(view){
-        val host =  view.findViewById<TextView>(R.id.chatroom_host_name)
+    inner class SearchViewHolder(view: View) :
+        RecyclerView.ViewHolder(binding.root) {
+        val host = view.findViewById<TextView>(R.id.chatroom_host_name)
         val title = view.findViewById<TextView>(R.id.chatroom_title)
-        val headShot = view.findViewById<ImageView>(R.id.head_shot)
+        val headPhoto = view.findViewById<ImageView>(R.id.head_shot)
     }
 
-    private fun loadFragment(fragment: Fragment){
-        val transaction = requireActivity().supportFragmentManager.beginTransaction()
-        transaction.replace(R.id.container, fragment)
-        transaction.disallowAddToBackStack()
-        transaction.commit()
-    }
 }

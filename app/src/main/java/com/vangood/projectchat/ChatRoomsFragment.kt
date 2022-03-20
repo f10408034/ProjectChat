@@ -28,11 +28,12 @@ import kotlin.concurrent.thread
 
 class ChatRoomsFragment : Fragment() {
     private val TAG = FragmentChatroomsBinding::class.java.simpleName
+    private lateinit var adapter: ChatRoomAdapter
+
     lateinit var binding: FragmentChatroomsBinding
     lateinit var websocket: WebSocket
-    val adapter = ChatRoomAdapter()
     val viewModel by viewModels<ChatViewModel>()
-    val chatrooms = mutableListOf<ChatData>()
+    val message = mutableListOf<ChatData>()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -41,8 +42,6 @@ class ChatRoomsFragment : Fragment() {
     ): View? {
         binding= FragmentChatroomsBinding.inflate(layoutInflater)
         return binding.root
-
-
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -81,13 +80,8 @@ class ChatRoomsFragment : Fragment() {
                 val json = text
                 val chatData = Gson().fromJson(json,ChatData::class.java)
                 if (chatData.event == "default_message") {
-                    Log.d(TAG, "user: ${chatData.body.nickname}")
-                    Log.d(TAG, "message: ${chatData.body.text}")
+                    viewModel.getNickname("${chatData.body.nickname}")
                 }
-                activity?.runOnUiThread {
-                    adapter.notifyDataSetChanged()
-                }
-
             }
             override fun onMessage(webSocket: WebSocket, bytes: ByteString) {
                 super.onMessage(webSocket, bytes)
@@ -100,38 +94,13 @@ class ChatRoomsFragment : Fragment() {
 
         //RecyclerView's Adapter
         binding.chat.setHasFixedSize(true)
-        binding.chat.layoutManager =LinearLayoutManager(requireContext())
+        binding.chat.layoutManager = LinearLayoutManager(requireContext())
+        adapter = ChatRoomAdapter()
         binding.chat.adapter = adapter
-        activity?.runOnUiThread {
-            adapter.submitRooms(chatrooms)
+        viewModel.chatRooms.observe(viewLifecycleOwner) { rooms ->
+            adapter.submitRooms(rooms)
         }
 
-        //ViewModel
-//        viewModel.chatRooms.observe(viewLifecycleOwner) { rooms ->
-//           adapter.submitRooms(rooms)
-//        }
-//        viewModel.getAllRooms()
-
-//        CoroutineScope(Dispatchers.IO)
-//            .launch {
-//                val json = URL("https://api.jsonserve.com/hQAtNk").readText()
-//                val msg = Gson().fromJson(json, ChatData::class.java)
-//                Log.d(TAG, "msg : ${msg.event}");
-//                //Toast.makeText(context, "msg", Toast.LENGTH_SHORT).show()
-//            }
-
-        //test chatroomlist
-//        thread {
-//            val json = URL("https://api.jsonserve.com/hQAtNk").readText()
-//            val chatRooms = Gson().fromJson(json,ChatRoomList::class.java)
-//            //fill list with new coming data
-//            chatrooms.clear()
-//            chatrooms.addAll(chatRooms.result.chatdata_list)
-//            //List<Message>
-//            activity?.runOnUiThread {
-//                adapter.notifyDataSetChanged()
-//            }
-//        }
 
         binding.send.setOnClickListener {
             thread {
@@ -148,6 +117,7 @@ class ChatRoomsFragment : Fragment() {
     }
 
     inner class ChatRoomAdapter : RecyclerView.Adapter<ChatRoomViewHolder>(){
+        val chatRooms = mutableListOf<String>()
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ChatRoomViewHolder {
             val view = layoutInflater.inflate(
                 R.layout.row_chatmessage, parent, false)
@@ -155,17 +125,16 @@ class ChatRoomsFragment : Fragment() {
         }//return 一個 View
 
         override fun onBindViewHolder(holder: ChatRoomViewHolder, position: Int) {
-            val message = chatrooms[position]
-            holder.userName.setText(message.body.nickname)
-            holder.tv_message.setText(message.body.text)
+            val message = chatRooms[position]
+            holder.userName.setText(message)
+            holder.tv_message.setText(message)
         }//在這裡取得元件的控制（每個item內的控制）
 
         override fun getItemCount(): Int {
-            return chatrooms.size
+            return chatRooms.size
         }
-        fun submitRooms(rooms: List<ChatData>) {
-            chatrooms.clear()
-            chatrooms.addAll(rooms)
+        fun submitRooms(message : String) {
+            chatRooms.add(0,message)
             notifyDataSetChanged()
         }
     }

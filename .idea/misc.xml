@@ -12,7 +12,7 @@
         <entry key="app/src/main/res/layout/fragment_search.xml" value="0.25" />
         <entry key="app/src/main/res/layout/fragment_signup.xml" value="0.1" />
         <entry key="app/src/main/res/layout/row_chatmessage.xml" value="0.22" />
-        <entry key="app/src/main/res/layout/row_chatroom.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/row_chatroom.xml" value="0.25" />
         <entry key="app/src/main/res/menu/menu_nav.xml" value="0.1" />
         <entry key="app/src/main/res/menu/menu_search.xml" value="0.19722222222222222" />
       </map>

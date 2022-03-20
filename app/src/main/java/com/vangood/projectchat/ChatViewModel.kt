@@ -9,12 +9,12 @@ import kotlinx.coroutines.launch
 import java.net.URL
 
 class ChatViewModel : ViewModel() {
-    val chatRooms = MutableLiveData<List<ChatData>>()
-    fun getAllRooms() {
-        viewModelScope.launch(Dispatchers.IO) {
-            val json = URL("https://api.jsonserve.com/hQAtNk").readText()
-            val response = Gson().fromJson(json, ChatRoomList::class.java)
-            chatRooms.postValue(response.result.chatdata_list)
-        }
+    val chatRooms = MutableLiveData<String>()
+
+    fun getNickname(Text: String){
+        chatRooms.postValue(Text)
+    }
+    fun getMessage(Text: String) {
+        chatRooms.postValue(Text)
     }
 }

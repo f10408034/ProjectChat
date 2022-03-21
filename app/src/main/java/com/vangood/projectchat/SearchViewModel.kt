@@ -20,8 +20,12 @@ class SearchViewModel : ViewModel() {
             val resultRoomsSet = mutableSetOf<Lightyear>()
 
             response.result.lightyear_list.forEach {
+                map.put(it.stream_id.toString(), it)
+                map.put(it.tags,it)
                 map.put(it.stream_title, it)
                 map.put(it.nickname, it)
+                keyList.add(it.stream_id.toString())
+                keyList.add(it.tags)
                 keyList.add(it.stream_title)
                 keyList.add(it.nickname)
             }
@@ -29,6 +33,7 @@ class SearchViewModel : ViewModel() {
             if ( key == ""){
                 resultRoomsSet.clear()
             } else {
+                resultRoomsSet.clear()
                 keyList.forEach {
                     if ( key in it){
                         map[it]?.let {

@@ -21,6 +21,7 @@ class SignUpFragment : Fragment() {
             uri?.let {
                 binding.imageView2.setImageURI(it)
                 uri.toString()//content://ccc.ddd/sss/aaa
+
             }
         }
     override fun onCreateView(
@@ -61,7 +62,6 @@ class SignUpFragment : Fragment() {
                     .setPositiveButton("ok",null)
                     .show()
             }
-
         }
 
         binding.back.setOnClickListener {

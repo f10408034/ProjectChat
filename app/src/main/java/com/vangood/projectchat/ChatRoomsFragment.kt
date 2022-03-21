@@ -101,17 +101,16 @@ class ChatRoomsFragment : Fragment() {
             adapter.submitRooms(rooms)
         }
 
-
         binding.send.setOnClickListener {
             thread {
                 val json = URL("https://api.jsonserve.com/hQAtNk").readText()
                 val msg = Gson().fromJson(json, ChatData::class.java)
                 val message = binding.sendmessage.text.toString()
                 websocket.send(Gson().toJson(Message("N", message)))
+                binding.sendmessage.setText("")
             }
         }
-        binding.bExit.setOnClickListener {
-
+        binding.exit.setOnClickListener {
             AlertDialog.Builder(requireContext())
                 .setTitle("Leave")
                 .setMessage("Are you sure you want to leave")

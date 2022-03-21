@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -65,11 +66,16 @@ class SearchFragment : Fragment() {
 
         override fun onBindViewHolder(holder: SearchViewHolder, position: Int) {
             val lightYearSearch = searchRooms[position]
-            holder.HostName.setText(lightYearSearch.nickname)
+            holder.streamid.setText(lightYearSearch.stream_id.toString())
+            holder.streamtags.setText(lightYearSearch.tags)
+            holder.nickname.setText(lightYearSearch.nickname)
             holder.title.setText(lightYearSearch.stream_title)
             Glide.with(this@SearchFragment).load(lightYearSearch.head_photo)
                 .into(holder.headPhoto)
             holder.itemView.setOnClickListener {
+            }
+            holder.itemView.setOnClickListener {
+                loadFragment(ChatRoomsFragment())
             }
         }
 
@@ -86,9 +92,18 @@ class SearchFragment : Fragment() {
 
     inner class SearchViewHolder(val binding: RowChatroomBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        val HostName = binding.chatroomHostName
-        val title = binding.chatroomTitle
+        val streamid = binding.streamId
+        val streamtags = binding.streamTags
+        val nickname = binding.nickname
+        val title = binding.streamTitle
         val headPhoto = binding.headShot
+    }
+
+    private fun loadFragment(fragment: Fragment){
+        val transaction = requireActivity().supportFragmentManager.beginTransaction()
+        transaction.replace(R.id.container, fragment)
+        transaction.disallowAddToBackStack()
+        transaction.commit()
     }
 
 

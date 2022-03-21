@@ -1,5 +1,6 @@
 package com.vangood.projectchat
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -19,6 +20,7 @@ class PersonFragment: Fragment() {
         return binding.root
     }
 
+    @SuppressLint("SetTextI18n")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         var pref = requireContext().getSharedPreferences("check",Context.MODE_PRIVATE)

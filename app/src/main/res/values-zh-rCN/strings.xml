@@ -19,4 +19,5 @@
     <string name="signup">注册</string>
     <string name="member_information">会员资讯</string>
     <string name="photograph">照片</string>
+    <string name="popular_recommendation">热门</string>
 </resources>

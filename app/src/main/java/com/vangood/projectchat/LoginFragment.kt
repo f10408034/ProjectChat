@@ -67,7 +67,7 @@ class LoginFragment: Fragment() {
 
                 pref.edit().putBoolean("loginstate",true)
                     .apply()
-                loadFragment(PersonFragment())
+                loadFragment(HomeFragment())
             } else {
                 AlertDialog.Builder(requireContext())
                     .setTitle("Login")

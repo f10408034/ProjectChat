@@ -19,4 +19,5 @@
     <string name="home">首頁</string>
     <string name="search">收尋</string>
     <string name="person">個人</string>
+    <string name="popular_recommendation">熱門</string>
 </resources>

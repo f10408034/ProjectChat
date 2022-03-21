@@ -20,4 +20,5 @@
     <string name="home">Home</string>
     <string name="search">Search</string>
     <string name="person">Person</string>
+    <string name="popular_recommendation">Popular Recommendation</string>
 </resources>

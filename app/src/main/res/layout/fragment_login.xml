@@ -56,13 +56,13 @@
         app:layout_constraintStart_toStartOf="@+id/ed_login_password"
         app:layout_constraintTop_toBottomOf="@+id/ed_login_password" />
 
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/b_login_login"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="50dp"
         android:layout_marginEnd="50dp"
-        android:backgroundTint="@color/teal_700"
+        android:background="@drawable/button_bg"
         android:text="@string/login"
         android:textColor="#000000"
         app:layout_constraintEnd_toEndOf="parent"
@@ -79,14 +79,15 @@
         app:layout_constraintGuide_percent="0.6"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/b_login_signup"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:backgroundTint="@color/teal_200"
+        android:background="@drawable/button_bg"
         android:text="@string/sign_up"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/b_login_login" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

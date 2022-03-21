@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">ProjectChat</string>
+    <string name="app_name">li-ming</string>
     <string name="account">帳號</string>
     <string name="password">密碼</string>
     <string name="remember_account">記住帳號</string>

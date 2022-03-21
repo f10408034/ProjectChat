@@ -2,6 +2,7 @@ package com.vangood.projectchat
 
 import android.app.Activity
 import android.app.AlertDialog
+import android.content.Context
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
@@ -56,12 +57,21 @@ class ChatRoomsFragment : Fragment() {
         binding.videoView.requestFocus()
         binding.videoView.start()
 
+        val pref = requireContext().getSharedPreferences("check", Context.MODE_PRIVATE)
+        val user : String
+        if (pref.getBoolean("loginstate",false) == false) {
+            user = "Guess"
+        } else {
+            user = pref.getString("nickname","").toString()
+        }
+
+
         //websocket
         val client = OkHttpClient.Builder()
             .readTimeout(3, TimeUnit.SECONDS)
             .build()
         val request = Request.Builder()
-            .url("wss://lott-dev.lottcube.asia/ws/chat/chat:app_test?nickname=liming")
+            .url("wss://lott-dev.lottcube.asia/ws/chat/chat:app_test?nickname=$user")
             .build()
 
         websocket = client.newWebSocket(request, object : WebSocketListener(){

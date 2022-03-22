@@ -20,13 +20,12 @@ class PersonFragment: Fragment() {
         return binding.root
     }
 
-    @SuppressLint("SetTextI18n")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         var pref = requireContext().getSharedPreferences("check",Context.MODE_PRIVATE)
 
-        binding.tvNickname.text = "nick name : ${pref.getString("nickname", "")}"
-        binding.tvAccount.text = "account : ${pref.getString("account", "")}"
+        binding.tvNickname.text = getString(R.string.nick_name) + ": ${pref.getString("nickname", "")}"
+        binding.tvAccount.text = getString(R.string.account) + ": ${pref.getString("account", "")}"
         binding.bSignOut.setOnClickListener {
             pref.edit().putBoolean("loginstate", false)
                 .apply()

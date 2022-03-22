@@ -60,9 +60,9 @@ class LoginFragment: Fragment() {
                                 ,account.toString()
                                 ,password.toString())) {
                 AlertDialog.Builder(requireContext())
-                    .setTitle("Login")
-                    .setMessage("Login success")
-                    .setPositiveButton("ok", null)
+                    .setTitle(R.string.login)
+                    .setMessage(getString(R.string.login_success))
+                    .setPositiveButton(getString(R.string.ok), null)
                     .show()
 
                 pref.edit().putBoolean("loginstate",true)
@@ -70,9 +70,9 @@ class LoginFragment: Fragment() {
                 loadFragment(HomeFragment())
             } else {
                 AlertDialog.Builder(requireContext())
-                    .setTitle("Login")
-                    .setMessage("Login Failed")
-                    .setPositiveButton("ok", null)
+                    .setTitle(R.string.login)
+                    .setMessage(getString(R.string.login_failed))
+                    .setPositiveButton(getString(R.string.ok), null)
                     .show()
             }
         }

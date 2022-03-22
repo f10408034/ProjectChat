@@ -1,5 +1,6 @@
 package com.vangood.projectchat
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -9,6 +10,7 @@ import kotlinx.coroutines.launch
 import java.net.URL
 
 class SearchViewModel : ViewModel() {
+//    private val TAG = SearchViewModel::class.java.simpleName
     val searchRooms = MutableLiveData<List<Lightyear>>()
 
     fun getSearchRooms(key : String) {
@@ -18,6 +20,7 @@ class SearchViewModel : ViewModel() {
             val map = mutableMapOf<String, Lightyear>()
             val keyList = mutableListOf<String>()
             val resultRoomsSet = mutableSetOf<Lightyear>()
+
 
             response.result.lightyear_list.forEach {
                 map.put(it.stream_id.toString(), it)
@@ -36,8 +39,8 @@ class SearchViewModel : ViewModel() {
                 resultRoomsSet.clear()
                 keyList.forEach {
                     if ( key in it){
-                        map[it]?.let {
-                            resultRoomsSet.add(it)
+                        map[it]?.let { m->
+                            resultRoomsSet.add(m)
                         }
                     }
                 }

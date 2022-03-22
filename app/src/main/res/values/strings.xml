@@ -21,4 +21,16 @@
     <string name="search">Search</string>
     <string name="person">Person</string>
     <string name="popular_recommendation">Popular Recommendation</string>
+    <string name="login_success">Login success</string>
+    <string name="login_failed">Login Failed</string>
+    <string name="ok">OK</string>
+    <string name="password_error">password error</string>
+    <string name="Please_enter_8to12_letters_or_numbers">Please enter 8–12 letters or numbers</string>
+    <string name="account_error">account error</string>
+    <string name="Please_enter_4to20_letters_or_numbers">Please enter 4–20 letters or numbers</string>
+    <string name="leave">Leave</string>
+    <string name="Are_you_sure_you_want_to_leave">Are you sure you want to leave</string>
+    <string name="signup_error">signup error</string>
+    <string name="please_enter_your_nickname">Please enter your nickname</string>
+    <string name="guest">Guest</string>
 </resources>

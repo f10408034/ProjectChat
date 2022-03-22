@@ -1,5 +1,7 @@
 package com.vangood.projectchat
 
+import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -33,7 +35,12 @@ class HomeFragment: Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        //web socket
+        val pref = requireContext().getSharedPreferences("check",Context.MODE_PRIVATE)
+
+        if (pref.getBoolean("loginstate", false)) {
+            binding.tvName.visibility = View.VISIBLE
+            binding.tvName.setText(pref.getString("nickname",""))
+        } else binding.tvName.visibility = View.GONE
 
         //RecyclerView's Adapter
         binding.recycler.setHasFixedSize(true)
@@ -41,13 +48,7 @@ class HomeFragment: Fragment() {
         val adapter = ChatRoomAdapter()
         binding.recycler.adapter = adapter
 
-        thread {
-            val json = URL("https://api.jsonserve.com/hQAtNk").readText()
-            val msg = Gson().fromJson(json, ChatData::class.java)
-            Log.d(TAG, "msg : ${msg.body} ")
-        }
-
-        //test chatroomlist
+        // chatroomlist
         thread {
             val json = URL("https://api.jsonserve.com/qHsaqy").readText()
             val chatRooms = Gson().fromJson(json,ChatRoomList::class.java)
@@ -96,9 +97,14 @@ class HomeFragment: Fragment() {
         val headShot = view.findViewById<ImageView>(R.id.head_shot)
     }
     private fun loadFragment(fragment: Fragment){
+        val parentActivity =  requireActivity() as MainActivity
         val transaction = requireActivity().supportFragmentManager.beginTransaction()
         transaction.replace(R.id.container, fragment)
         transaction.disallowAddToBackStack()
         transaction.commit()
+        parentActivity.binding.bottomNavBar.visibility = View.GONE
+
     }
+
+
 }

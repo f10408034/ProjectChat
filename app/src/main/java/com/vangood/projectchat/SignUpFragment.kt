@@ -40,26 +40,35 @@ class SignUpFragment : Fragment() {
             val nickname = binding.edSignupNickname.text.toString()
             val account = binding.edSignupAccount.text.toString()
             val password = binding.edSignupPassword.text.toString()
-            if (viewModel.accountverify(account)){
-                if (viewModel.passwordverify(password)){
-                    val pref = requireContext().getSharedPreferences("check", Context.MODE_PRIVATE)
-                    pref.edit().putString("nickname", nickname)
-                        .putString("account", account)
-                        .putString("password", password)
-                        .apply()
-                    loadFragment(LoginFragment())
-                }else {
+            if (binding.edSignupNickname.text.toString() != "") {
+                if (viewModel.accountverify(account)) {
+                    if (viewModel.passwordverify(password)) {
+                        val pref =
+                            requireContext().getSharedPreferences("check", Context.MODE_PRIVATE)
+                        pref.edit().putString("nickname", nickname)
+                            .putString("account", account)
+                            .putString("password", password)
+                            .apply()
+                        loadFragment(LoginFragment())
+                    } else {
+                        AlertDialog.Builder(requireContext())
+                            .setTitle(getString(R.string.password_error))
+                            .setMessage(getString(R.string.Please_enter_8to12_letters_or_numbers))
+                            .setPositiveButton(getString(R.string.ok), null)
+                            .show()
+                    }
+                } else {
                     AlertDialog.Builder(requireContext())
-                        .setTitle("password error")
-                        .setMessage("Please enter 8-12 letters or numbers")
-                        .setPositiveButton("ok",null)
+                        .setTitle(getString(R.string.account_error))
+                        .setMessage(getString(R.string.Please_enter_4to20_letters_or_numbers))
+                        .setPositiveButton(getString(R.string.ok), null)
                         .show()
                 }
-            }else {
+            } else {
                 AlertDialog.Builder(requireContext())
-                    .setTitle("account error")
-                    .setMessage("Please enter 4-20 letters or numbers")
-                    .setPositiveButton("ok",null)
+                    .setTitle(getString(R.string.signup_error))
+                    .setMessage(getString(R.string.please_enter_your_nickname))
+                    .setPositiveButton(getString(R.string.ok), null)
                     .show()
             }
         }

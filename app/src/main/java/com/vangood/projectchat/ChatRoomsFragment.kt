@@ -1,27 +1,20 @@
 package com.vangood.projectchat
 
-import android.app.Activity
 import android.app.AlertDialog
 import android.content.Context
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import android.widget.MediaController
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.Gson
 import com.vangood.projectchat.databinding.FragmentChatroomsBinding
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import okhttp3.*
 import okio.ByteString
 import java.net.URL
@@ -60,7 +53,7 @@ class ChatRoomsFragment : Fragment() {
         val pref = requireContext().getSharedPreferences("check", Context.MODE_PRIVATE)
         val user : String
         if (pref.getBoolean("loginstate",false) == false) {
-            user = "Guess"
+            user = getString(R.string.guest)
         } else {
             user = pref.getString("nickname","").toString()
         }
@@ -122,9 +115,9 @@ class ChatRoomsFragment : Fragment() {
         }
         binding.exit.setOnClickListener {
             AlertDialog.Builder(requireContext())
-                .setTitle("Leave")
-                .setMessage("Are you sure you want to leave")
-                .setPositiveButton("Exit",{ d , w ->
+                .setTitle(getString(R.string.leave))
+                .setMessage(getString(R.string.Are_you_sure_you_want_to_leave))
+                .setPositiveButton(getString(R.string.leave),{ d , w ->
                     loadFragment(HomeFragment())
                 })
                 .show()
@@ -158,10 +151,12 @@ class ChatRoomsFragment : Fragment() {
     }
 
     private fun loadFragment(fragment: Fragment){
+        val parentActivity =  requireActivity() as MainActivity
         val transaction = requireActivity().supportFragmentManager.beginTransaction()
         transaction.replace(R.id.container, fragment)
         transaction.disallowAddToBackStack()
         transaction.commit()
+        parentActivity.binding.bottomNavBar.visibility = View.VISIBLE
     }
 
 }

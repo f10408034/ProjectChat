@@ -35,7 +35,6 @@ class MainActivity : AppCompatActivity() {
                     true
                 }
                 R.id.action_person ->{
-
                     if (pref.getBoolean("loginstate", false)){
                     supportFragmentManager.beginTransaction().run{
                         replace(R.id.container, fragments[5])
@@ -56,7 +55,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun initFragment(){
         fragments.add(0, HomeFragment())
-        fragments.add(1, SearchFragment())
+        fragments.add(1, SearchFragment.instance)
         fragments.add(2, LoginFragment())
         fragments.add(3, SignUpFragment())
         fragments.add(4, ChatRoomsFragment())

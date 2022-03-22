@@ -18,9 +18,10 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/chat"
-        android:layout_width="200dp"
-        android:layout_height="190dp"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
         android:layout_marginStart="5dp"
+        app:layout_constraintBottom_toTopOf="@+id/guideline7"
         app:layout_constraintStart_toStartOf="@+id/videoView"
         app:layout_constraintTop_toTopOf="@+id/guideline5" />
 
@@ -36,27 +37,31 @@
         android:layout_width="0dp"
         android:layout_height="40dp"
         android:layout_marginStart="15dp"
-        android:layout_marginTop="15dp"
         android:layout_marginEnd="15dp"
+        android:layout_marginBottom="4dp"
         android:background="@drawable/b_layout_bg"
         android:ems="10"
         android:hint="@string/message"
+        android:importantForAutofill="no"
         android:inputType="textPersonName"
         android:textColor="@color/white"
+        app:layout_constraintBottom_toBottomOf="@+id/videoView"
         app:layout_constraintEnd_toStartOf="@+id/send"
         app:layout_constraintStart_toStartOf="@+id/chat"
-        app:layout_constraintTop_toBottomOf="@+id/chat"
-        tools:ignore="TouchTargetSizeCheck" />
+        app:layout_constraintTop_toTopOf="@+id/guideline7"
+        tools:ignore="TouchTargetSizeCheck,TextContrastCheck" />
 
     <ImageView
         android:id="@+id/send"
         android:layout_width="40dp"
         android:layout_height="40dp"
+        android:layout_marginEnd="15dp"
         android:background="@drawable/b_layout_bg"
         app:layout_constraintBottom_toBottomOf="@+id/sendmessage"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/sendmessage"
-        app:srcCompat="@drawable/send" />
+        app:srcCompat="@drawable/send"
+        android:contentDescription="TODO" />
 
     <ImageView
         android:id="@+id/exit"
@@ -66,6 +71,14 @@
         android:layout_marginEnd="15dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/logout" />
+        app:srcCompat="@drawable/logout"
+        android:contentDescription="TODO" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline7"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.9" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

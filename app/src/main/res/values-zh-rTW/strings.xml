@@ -20,4 +20,16 @@
     <string name="search">收尋</string>
     <string name="person">個人</string>
     <string name="popular_recommendation">熱門</string>
+    <string name="login_success">登入成功</string>
+    <string name="login_failed">登入失敗</string>
+    <string name="ok">確定</string>
+    <string name="password_error">密碼錯誤</string>
+    <string name="account_error">帳號錯誤</string>
+    <string name="Please_enter_4to20_letters_or_numbers">請輸入4-20位字母或數字</string>
+    <string name="Please_enter_8to12_letters_or_numbers">請輸入8-12位字母或數字</string>
+    <string name="leave">離開</string>
+    <string name="Are_you_sure_you_want_to_leave">確定要離開嗎</string>
+    <string name="signup_error">註冊失敗</string>
+    <string name="please_enter_your_nickname">請輸入匿名</string>
+    <string name="guest">訪客</string>
 </resources>

@@ -29,7 +29,7 @@ class MainActivity : AppCompatActivity() {
                 }
                 R.id.action_search ->{
                     supportFragmentManager.beginTransaction().run {
-                        replace(R.id.container, fragments[1])
+                        replace(R.id.container, SearchFragment())
                         commit()
                     }
                     true

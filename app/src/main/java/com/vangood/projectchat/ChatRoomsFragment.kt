@@ -45,6 +45,7 @@ class ChatRoomsFragment : Fragment() {
         var mediaController = MediaController(requireContext())
         mediaController.setAnchorView(binding.videoView)
         val offlineUri = Uri.parse("android.resource://${requireActivity().packageName}/${R.raw.hime3}")
+
         binding.videoView.setMediaController(mediaController)
         binding.videoView.setVideoURI(offlineUri)
         binding.videoView.requestFocus()
